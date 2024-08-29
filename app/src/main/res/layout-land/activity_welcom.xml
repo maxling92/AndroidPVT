@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.digitech_maker.pvt.Welcom">
+
+
+        <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="285dp"
+        android:layout_height="85dp"
+        android:weightSum="1"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="0"
+                android:id="@+id/textView2"
+                android:textAlignment="gravity"
+                android:textSize="48sp"
+                android:layout_weight="0.97"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+
+    <Button
+        android:layout_width="118dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="83dp"
+        android:text="@string/welcom_light"
+        android:id="@+id/buttonlight"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:layout_width="118dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="83dp"
+        android:text="@string/welcom_sound"
+        android:id="@+id/buttonsound"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true" />
+\
+
+    <Button
+        android:layout_width="118dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="83dp"
+        android:text="@string/welcom_start"
+        android:id="@+id/buttonstart"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="118dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="83dp"
+        android:text="@string/welcom_back"
+        android:id="@+id/buttonback"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:visibility="visible"
+        android:layout_gravity="left"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="118dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="83dp"
+        android:text="@string/welcom_next"
+        android:id="@+id/buttonnext"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:visibility="visible"
+        android:layout_gravity="right"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignLeft="@+id/buttonlight"
+        android:layout_alignStart="@+id/buttonlight" />
+
+
+</RelativeLayout>

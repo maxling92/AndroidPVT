@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">PVT</string>
+    <string name="title_activity_result">Result</string>
+    <string name="mw_textview3">Berapa kali pengukuran dilakukan?</string>
+    <string name="mw_dua0kali">20 kali</string>
+    <string name="mw_tiga0kali">30 kali</string>
+    <string name="mw_empat0kali">40 kali</string>
+    <string name="mw_enam0kali">60 kali</string>
+    <string name="mw_textview4">Berapa detik jarak antar stimulus?</string>
+    <string name="mw_limadetik">5 detikt</string>
+    <string name="mw_tujuhdetik">7 detikt</string>
+    <string name="mw_sepuluhdetik">10 detikt</string>
+    <string name="mw_cahayabtn">VISUAL</string>
+    <string name="mw_suarabtn">AUDIO</string>
+    <string name="mw_reportbtn">LIHAT DATA</string>
+    <string name="mw_exportbtn">EKSPOR DATA</string>
+    <string name="mw_logoutbtn">LOG OUT</string>
+
+    <string name="welcom_message">TEKAN MULAI</string>
+    <string name="welcom_light">VISUAL</string>
+    <string name="welcom_sound">AUDIO</string>
+    <string name="welcom_start">MULAI</string>
+    <string name="welcom_back">SEBELUMNYA</string>
+    <string name="welcom_next">BERIKUTNYA</string>
+
+    <string name="title_hasilpengukuran">PVT: Pengujian Visual</string>
+    <string name="hasil_editnama">Nama Oberservan</string>
+    <string name="hasil_namatext">Nama</string>
+    <string name="hasil_simpanbtn">SIMPAN</string>
+    <string name="hasil_tipelabel">Tanggal</string>
+    <string name="hasil_lokasilabel">Lokasi</string>
+    <string name="hasil_hasillabel">Hasil</string>
+    <string name="hasil_hasilnormal">Normal</string>
+    <string name="hasil_hasilringan">Ringan</string>
+    <string name="hasil_hasilsedang">Sedang</string>
+    <string name="hasil_hasilberat">Berat</string>
+    <string name="hasil_gagallabel">Gagal </string>
+    <string name="hasil_frekuensilabel">kali</string>
+    <string name="hasil_tblcol1">No</string>
+    <string name="hasil_tblcol2">Waktu-respon</string>
+    <string name="hasil_hapusbtn">HAPUS</string>
+    <string name="hasil_lokasi_unknown">Lokasi Tidak Diketahui</string>
+    <string name="hasil_kirimbtn">KIRIM</string>
+
+
+    <string name="action_settings">Settings</string>
+</resources>

@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">PVT</string>
+    <string name="title_activity_result">Result</string>
+    <string name="mw_textview3">Combien de fois un test devrait être effectué?</string>
+    <string name="mw_dua0kali">20 fois</string>
+    <string name="mw_tiga0kali">30 fois</string>
+    <string name="mw_empat0kali">40 fois</string>
+    <string name="mw_enam0kali">60 fols</string>
+    <string name="mw_textview4">Combien de temps est le temps entre deux stimuli?</string>
+    <string name="mw_limadetik">5 sec</string>
+    <string name="mw_tujuhdetik">7 secs</string>
+    <string name="mw_sepuluhdetik">10 secs</string>
+    <string name="mw_cahayabtn">VISUEL</string>
+    <string name="mw_suarabtn">AUDIO</string>
+    <string name="mw_reportbtn">VOIR DONNEE</string>
+    <string name="mw_exportbtn">EXPORTER TOUTES</string>
+    <string name="mw_exportnewbtn">EXPORT NOUVELLES</string>
+
+    <string name="welcom_message">Appuyez Demarrer</string>
+    <string name="welcom_light">VISUEL</string>
+    <string name="welcom_sound">AUDIO</string>
+    <string name="welcom_start">DEMARRER</string>
+    <string name="welcom_back">PRECEDENT</string>
+    <string name="welcom_next">PROCHAIN</string>
+
+    <string name="title_hasilpengukuran">Essai </string>
+    <string name="hasil_editnama">Oberservee Nom</string>
+    <string name="hasil_edittgllahir">10/11/1985</string>
+    <string name="hasil_editjabatan">Operator</string>
+    <string name="hasil_namatext">Nom</string>
+    <string name="hasil_jabatantext">Position</string>
+    <string name="hasil_tgllahirtext">Naissance</string>
+    <string name="hasil_simpanbtn">SAUVER</string>
+    <string name="hasil_tipelabel">Date</string>
+    <string name="hasil_lokasilabel">emplacement</string>
+    <string name="hasil_hasillabel">Resultat</string>
+    <string name="hasil_hasilnormal">Normal, 0 &#8211; 240, ne pas eprouver de fatigue</string>
+    <string name="hasil_hasilringan">Leger, >240 &#8211; 410, legere fatigue </string>
+    <string name="hasil_hasilsedang">Modere, >410 &#8211; 580, moderee fatigue</string>
+    <string name="hasil_hasilberat">Severe, >580, severe fatigue</string>
+    <string name="hasil_gagallabel">Echec</string>
+    <string name="hasil_frekuensilabel">fois</string>
+    <string name="hasil_tblcol1">Non</string>
+    <string name="hasil_tblcol2">Temp-Response</string>
+    <string name="hasil_hapusbtn">RETIRER</string>
+
+
+    <string name="action_settings">Settings</string>
+</resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="200px"
+        android:layout_height="600px"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text="Siap"
+            android:layout_marginTop="78dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/lampIcon"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.80"
+            android:textAlignment="center" />
+
+
+        <TextView
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/textView2"
+            android:layout_weight="0.10"
+            android:textAlignment="textEnd"
+            android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="335dp"
+            android:layout_height="85dp"
+            android:weightSum="1"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="63dp">
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0dp"
+                android:text="LIGHT"
+                android:id="@+id/buttonlight"
+                android:layout_gravity="left" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="SOUND"
+                android:id="@+id/buttonsound"
+                android:layout_gravity="right"
+                android:layout_weight="0.50" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

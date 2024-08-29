@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.digitech_maker.pvt.HasilPengukuran">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hasil_namatext"
+            android:id="@+id/namatext"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:gravity="bottom"
+            android:textSize="16dp"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="@string/hasil_editnama"
+            android:ems="20"
+            android:id="@+id/editnama"
+            android:autoText="true"
+            android:clickable="true"
+            android:editable="true"
+            android:enabled="true"
+            android:shadowColor="#b6abab"
+            android:layout_alignTop="@+id/namatext"
+            android:layout_centerHorizontal="false"
+            android:layout_marginLeft="100dp"
+            android:textSize="16dp" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hasil_simpanbtn"
+            android:id="@+id/simpanbutton"
+            android:layout_alignBottom="@+id/editnama"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hasil_tgllahirtext"
+            android:id="@+id/tgllahirtext"
+            android:layout_below="@+id/editnama"
+            android:gravity="bottom"
+            android:layout_alignParentLeft="true"
+            android:textSize="16dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:hint="dd-MM-yyyy"
+            android:ems="10"
+            android:id="@+id/edittgllahir"
+            android:autoText="true"
+            android:clickable="true"
+            android:editable="true"
+            android:enabled="true"
+            android:shadowColor="#b6abab"
+            android:layout_alignTop="@+id/tgllahirtext"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="100dp"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hasil_jabatantext"
+            android:id="@+id/jabatantext"
+            android:layout_below="@+id/edittgllahir"
+            android:textAlignment="gravity"
+            android:layout_alignParentLeft="true"
+            android:textSize="16dp" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/kirimbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hasil_kirimbtn"
+            android:layout_marginTop="16dp"
+            android:layout_alignBottom="@id/edittgllahir"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            />
+
+        <EditText
+            android:id="@+id/editjabatan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/jabatantext"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="2dp"
+            android:autoText="true"
+            android:clickable="true"
+            android:editable="true"
+            android:ems="20"
+            android:enabled="true"
+            android:inputType="textPersonName"
+            android:shadowColor="#b6abab"
+            android:text="@string/hasil_editjabatan"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hasil_perusahaantext"
+            android:id="@+id/perusahaantext"
+            android:layout_below="@+id/editjabatan"
+            android:textAlignment="gravity"
+            android:layout_alignParentLeft="true"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/editperusahaan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/perusahaantext"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="2dp"
+            android:autoText="true"
+            android:clickable="true"
+            android:editable="true"
+            android:ems="20"
+            android:enabled="true"
+            android:inputType="textPersonName"
+            android:shadowColor="#b6abab"
+            android:text="@string/hasil_editperusahaan"
+            android:textSize="16dp"
+            android:layout_below="@+id/editjabatan"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editperusahaan">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hasil_tipelabel"
+                android:id="@+id/tipelabel"
+                android:layout_below="@+id/editjabatan"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hasil_lokasilabel"
+                android:id="@+id/lokasilabel"
+                android:layout_below="@+id/editjabatan"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hasil_hasillabel"
+                android:id="@+id/hasillabel"
+                android:layout_below="@+id/editjabatan"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hasil_gagallabel"
+                android:id="@+id/gagallabel"
+                android:layout_alignTop="@+id/hasillabel"
+                android:layout_toRightOf="@+id/tipelabel"
+                android:layout_toEndOf="@+id/tipelabel" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="480dp"
+                android:id="@+id/tabelhasil"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/hasillabel">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/col1"
+                        android:text="@string/hasil_tblcol1"
+                        android:layout_column="0"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/col2"
+                        android:text="@string/hasil_tblcol2"
+                        android:layout_weight="1"
+                        android:layout_column="1"
+                        android:gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/col3"
+                        android:text="@string/hasil_tblcol1"
+                        android:layout_column="3"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/col4"
+                        android:text="@string/hasil_tblcol2"
+                        android:layout_weight="1"
+                        android:layout_column="4"
+                        android:gravity="center_horizontal" />
+                </TableRow>
+            </TableLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="@string/hasil_hapusbtn"
+                    android:id="@+id/hapusbutton"
+                    android:layout_alignWithParentIfMissing="false"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=">>"
+                    android:id="@+id/nextbutton"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/hasil_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tabelhasil"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

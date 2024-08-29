@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context="com.digitech_maker.pvt.RegisterActivity">
+
+    <EditText
+        android:id="@+id/namaobservant"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:layout_below="@id/namaobservant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/tgllahir"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="DD-MM-YYYY"
+        android:layout_below="@id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:inputType="date"
+        android:focusable="false"
+        android:background="@android:drawable/editbox_background" />
+
+    <EditText
+        android:id="@+id/jabatan"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="Jabatan"
+        android:layout_below="@id/tgllahir"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/namaperusahaan"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="Perusahaan"
+        android:layout_below="@id/jabatan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:inputType="text"/>
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/namaperusahaan"
+        android:layout_centerHorizontal="true"
+        android:text="Register" />
+
+    <TextView
+        android:id="@+id/loginLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/registerButton"
+        android:text="Sudah ada akun ? login"
+        android:textColorLink="#0000FF"
+        android:layout_marginTop="16dp"/>
+
+</RelativeLayout>
