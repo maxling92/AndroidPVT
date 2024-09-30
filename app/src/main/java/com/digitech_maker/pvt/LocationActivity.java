@@ -1,9 +1,9 @@
+// LocationActivity.java
 package com.digitech_maker.pvt;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,9 +11,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -28,24 +28,28 @@ import java.util.Locale;
 public class LocationActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 101;
-    private static final int LOCATION_REQUEST_CODE = 102;
-
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
+    private int testType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Retrieve testType from the Intent
+        testType = getIntent().getIntExtra("testType", -1);
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        checkLocationPermission();
+        checkLocationPermissionAndStartUpdates();
     }
 
-    private void checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+    private void checkLocationPermissionAndStartUpdates() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
+            // Permission is already granted, start location updates
             startLocationUpdates();
         }
     }
@@ -63,15 +67,18 @@ public class LocationActivity extends AppCompatActivity {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    // Koordinat lokasi
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-
-                    // Konversi koordinat menjadi alamat
                     String lokasi = getAddressFromCoordinates(latitude, longitude);
 
-                    // Kirim lokasi kembali ke activity pemanggil
-                    sendLocationBackToCaller(lokasi);
+                    saveLocationToPreferences(lokasi);
+
+                    Intent broadcastIntent = new Intent("com.digitech_maker.pvt.LOCATION_UPDATE");
+                    broadcastIntent.putExtra("lokasi", lokasi);
+                    broadcastIntent.putExtra("testType", testType);
+                    sendBroadcast(broadcastIntent);
+
+                    finish(); // Finish LocationActivity after sending the data
                 }
             }
         };
@@ -83,7 +90,7 @@ public class LocationActivity extends AppCompatActivity {
 
     private String getAddressFromCoordinates(double latitude, double longitude) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        String addressString = "Alamat tidak ditemukan";
+        String addressString = "Address not found";
         try {
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses != null && !addresses.isEmpty()) {
@@ -96,21 +103,21 @@ public class LocationActivity extends AppCompatActivity {
         return addressString;
     }
 
-    private void sendLocationBackToCaller(String lokasi) {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("lokasi", lokasi);
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+    private void saveLocationToPreferences(String location) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("lastKnownLocation", location);
+        editor.apply();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationUpdates();
             } else {
-                Toast.makeText(this, "Location permission is required for this app.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Location permission is required to run this test.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }

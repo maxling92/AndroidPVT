@@ -24,16 +24,19 @@ public class ManagerAPI {
                 if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onFailure(response.message());
+                    // Handle failure response codes like 400 or 500
+                    callback.onFailure("Failed to upload: " + response.code() + " " + response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                callback.onFailure(t.getMessage());
+                // Handle network failure
+                callback.onFailure("Network failure: " + t.getMessage());
             }
         });
     }
+
 
     public interface ApiCallback {
         void onSuccess(ResponseBody responseBody);

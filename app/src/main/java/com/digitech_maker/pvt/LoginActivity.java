@@ -71,11 +71,22 @@ public class LoginActivity extends AppCompatActivity {
                 String tgllahir = dbHandler.getUserTanggallahir(namaobservant);
                 String jabatan = dbHandler.getUserJabatan(namaobservant);
                 String namaPerusahaan = dbHandler.getUserPerusahaan(namaobservant);
+
+                // Ensure that the date format is consistent
+                if (tgllahir != null && tgllahir.contains("/")) {
+                    tgllahir = tgllahir.replace("/", "-");  // Ensure consistent format
+                }
+
                 DataUser dataUser = new DataUser(this);  // Create an instance of DataUser
                 dataUser.UserActive(namaobservant, tgllahir, jabatan, namaPerusahaan);
 
+                // Save user details to SharedPreferences
                 SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("username", namaobservant);
+                editor.putString("tgllahir", tgllahir);  // Save formatted tgllahir
+                editor.putString("jabatan", jabatan);
+                editor.putString("namaPerusahaan", namaPerusahaan);
                 editor.putBoolean("isLoggedIn", true);
                 editor.apply();
 
@@ -92,5 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Database error. Please try again later.", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
 

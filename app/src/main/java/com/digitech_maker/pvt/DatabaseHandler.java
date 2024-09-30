@@ -37,7 +37,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_JENISTEST = "tipe";
     private static final String KEY_LASTID = "lastid";
     private static final String KEY_LOKASI = "lokasi";
-    private static final String KEY_NAMADATA = "namadata";
 
     public static final String KEY_NAMAOBSERVANT = "namaobservant";
     public static final String KEY_TGLLAHIR = "tgllahir";
@@ -87,8 +86,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_JENISTEST + " INT,"
                 + KEY_JABATAN + " TEXT,"
                 + KEY_LOKASI + " TEXT,"
-                + KEY_PERUSAHAAN + " TEXT,"
-                + KEY_NAMADATA + " TEXT "
+                + KEY_PERUSAHAAN + " TEXT"
                 + ")";
         Log.d("DatabaseHandler", "Creating table: " + CREATE_HASIL_TABLE);
         db.execSQL(CREATE_HASIL_TABLE);
@@ -121,7 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void removeHasil(Hasil item) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_HASIL, KEY_NAMADATA + "=" + item.getNamadata(), null);
+        db.delete(TABLE_HASIL, KEY_ID + "=" + item.getID(), null);
         db.close();
     }
 
@@ -158,11 +156,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_PERUSAHAAN, item.getnamaPerusahaan());
 
 
-        if (item.getNamadata() != null && !item.getNamadata().isEmpty()) {
-            db.update(TABLE_HASIL, values, KEY_NAMADATA + "=?", new String[]{item.getNamadata()});
+        if (item.getID()>0) {
+            db.update(TABLE_HASIL, values, KEY_ID + "=" + item.getID(), null);
         } else {
-            long theid = db.insert(TABLE_HASIL, null, values);
-            item.setNamadata(String.valueOf(theid));
+            long theid = -1;
+            try {
+                theid = db.insertOrThrow(TABLE_HASIL, null, values);
+            }catch (SQLException e) {
+                e.printStackTrace();
+            }
+            item.setID((int) theid);
         }
         db.close();
     }
@@ -186,7 +189,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 Hasil hasil = new Hasil(namaobservant, jabatan, tgllahirStr, namaPerusahaan);
                 hasil.setID(Integer.parseInt(cursor.getString(0)));
-                hasil.setNamadata(cursor.getString(cursor.getColumnIndexOrThrow(KEY_NAMADATA)));
                 hasil.setNamaObservant(namaobservant);
                 hasil.setRataRata(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_RATA)));
                 hasil.setGagal(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_GAGAL)));
@@ -249,7 +251,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_LASTID, nextlastid);
-        db.update(TABLE_WAKTU, values, KEY_NAMADATA + "= 1", null);
+        db.update(TABLE_WAKTU, values, KEY_ID + "= 1", null);
 
         cursor.close();
         db.close();
@@ -278,7 +280,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public boolean checkUser(String namaobservant, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_NAMADATA}, KEY_NAMAOBSERVANT + "=? AND " + KEY_PASSWORD + "=?",
+        Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ID}, KEY_NAMAOBSERVANT + "=? AND " + KEY_PASSWORD + "=?",
                 new String[]{namaobservant, password}, null, null, null, null);
         int count = cursor.getCount();
         cursor.close();
@@ -294,11 +296,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String tgllahir = cursor.getString(cursor.getColumnIndexOrThrow(KEY_TGLLAHIR));
             cursor.close();
             db.close();
+
+            // Ensure that the date format is correct
+            if (tgllahir != null && tgllahir.contains("/")) {
+                tgllahir = tgllahir.replace("/", "-");  // Replace slashes with hyphens
+            }
+
             return tgllahir;
         }
         db.close();
         return null;
     }
+
 
     public String getUserJabatan(String namaobservant) {
         SQLiteDatabase db = this.getReadableDatabase();

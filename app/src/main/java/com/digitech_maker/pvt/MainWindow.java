@@ -1,8 +1,10 @@
 package com.digitech_maker.pvt;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,13 +14,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
-
 
 public class MainWindow extends AppCompatActivity {
 
@@ -26,6 +26,9 @@ public class MainWindow extends AppCompatActivity {
     private static final String PREFS_NAME = "MyPrefs";
     private static final String KEY_LAST_KNOWN_LOCATION = "last_known_location";
     private SharedPreferences sharedPreferences;
+    private BroadcastReceiver locationReceiver;
+    private String lokasi;
+    private int testType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +47,11 @@ public class MainWindow extends AppCompatActivity {
         Button btnreport = findViewById(R.id.reportbutton);
         btnreport.setOnClickListener(v -> showReport());
 
-        Button btn1 = findViewById(R.id.suaraBtn);
-        btn1.setOnClickListener(v -> handleTestStart(2)); // Audio test
+        Button btnAudioTest = findViewById(R.id.suaraBtn);
+        btnAudioTest.setOnClickListener(v -> startTest(2)); // Audio test
 
-        Button btn2 = findViewById(R.id.cahayaBtn);
-        btn2.setOnClickListener(v -> handleTestStart(1)); // Visual test
+        Button btnVisualTest = findViewById(R.id.cahayaBtn);
+        btnVisualTest.setOnClickListener(v -> startTest(1)); // Visual test
 
         Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(v -> logout());
@@ -59,45 +62,120 @@ public class MainWindow extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         }
+
+        locationReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null && "com.digitech_maker.pvt.LOCATION_UPDATE".equals(intent.getAction())) {
+                    // Retrieve lokasi from the broadcast intent
+                    lokasi = intent.getStringExtra("lokasi");
+                    testType = intent.getIntExtra("testType", -1);
+
+                    // If lokasi is null or empty, fall back to SharedPreferences
+                    if (lokasi == null || lokasi.isEmpty()) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                        lokasi = sharedPreferences.getString("lastKnownLocation", "Location unknown");
+                    }
+
+                    // Now, use the testType logic to start the appropriate test
+                    if (testType == 1) {
+                        startVisualTest(lokasi);
+                    } else if (testType == 2) {
+                        startAudioTest(lokasi);
+                    } else {
+                        Toast.makeText(MainWindow.this, "Unknown test type.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        };
+
+        // Register the receiver in the onCreate method
+        IntentFilter filter = new IntentFilter("com.digitech_maker.pvt.LOCATION_UPDATE");
+        registerReceiver(locationReceiver, filter);
     }
 
-    private void handleTestStart(int testType) {
+
+    private void startTest(int testType) {
         Intent locationIntent = new Intent(MainWindow.this, LocationActivity.class);
-        startActivityForResult(locationIntent, REQUEST_LOCATION);
+        locationIntent.putExtra("testType", testType);
+        startActivity(locationIntent);
     }
 
-    private void startTest(int testType, String lokasi) {
-        Intent intent = new Intent(MainWindow.this, Welcom.class);
 
+    private void startVisualTest(String lokasi) {
+        Intent intent = new Intent(MainWindow.this, Welcom.class);
+        intent.putExtra("lokasi", lokasi);
+
+        // Get the selected frequency
         RadioGroup pengukuran = findViewById(R.id.radioPengukuran);
-        int selectedId = pengukuran.getCheckedRadioButtonId();
-        RadioButton selectedButton = findViewById(selectedId);
-        int frq = 20;
-        if (selectedButton.getId() == R.id.tiga0kali) {
+        int idt = pengukuran.getCheckedRadioButtonId();
+        RadioButton selectedbutton = findViewById(idt);
+        int frq = 20; // default value
+        if (selectedbutton.getId() == R.id.tiga0kali)
             frq = 30;
-        } else if (selectedButton.getId() == R.id.empat0kali) {
+        if (selectedbutton.getId() == R.id.empat0kali)
             frq = 40;
-        } else if (selectedButton.getId() == R.id.enam0kali) {
+        if (selectedbutton.getId() == R.id.enam0kali)
             frq = 60;
-        }
         Welcom.frekuensi = frq;
 
-        RadioGroup dlyGroup = findViewById(R.id.radioPeriode);
-        int delayId = dlyGroup.getCheckedRadioButtonId();
-        RadioButton delayButton = findViewById(delayId);
-        int delayPeriode = 5;
-        if (delayButton.getId() == R.id.tujuhdetik) {
-            delayPeriode = 7;
-        } else if (delayButton.getId() == R.id.sepuluhdetik) {
-            delayPeriode = 10;
-        }
-        Welcom.delay = delayPeriode;
+        // Get the selected delay period
+        RadioGroup dlygroup = findViewById(R.id.radioPeriode);
+        int dly = dlygroup.getCheckedRadioButtonId();
+        RadioButton selectedbutton2 = findViewById(dly);
+        int delayperiode = 5; // default value
+        if (selectedbutton2.getId() == R.id.tujuhdetik)
+            delayperiode = 7;
+        if (selectedbutton2.getId() == R.id.sepuluhdetik)
+            delayperiode = 10;
+        Welcom.delay = delayperiode;
 
-        Welcom.tipetest = testType;
-
-        intent.putExtra("lokasi", lokasi);
+        Welcom.tipetest = 1;
         startActivity(intent);
+        Toast.makeText(this, "Starting Visual Test at " + lokasi, Toast.LENGTH_SHORT).show();
     }
+
+    private void startAudioTest(String lokasi) {
+        Intent intent = new Intent(MainWindow.this, Welcom.class);
+        intent.putExtra("lokasi", lokasi);
+
+        // Get the selected frequency
+        RadioGroup pengukuran = findViewById(R.id.radioPengukuran);
+        int idt = pengukuran.getCheckedRadioButtonId();
+        RadioButton selectedbutton = findViewById(idt);
+        int frq = 20; // default value
+        if (selectedbutton.getId() == R.id.tiga0kali)
+            frq = 30;
+        if (selectedbutton.getId() == R.id.empat0kali)
+            frq = 40;
+        if (selectedbutton.getId() == R.id.enam0kali)
+            frq = 60;
+        Welcom.frekuensi = frq;
+
+        // Get the selected delay period
+        RadioGroup dlygroup = findViewById(R.id.radioPeriode);
+        int dly = dlygroup.getCheckedRadioButtonId();
+        RadioButton selectedbutton2 = findViewById(dly);
+        int delayperiode = 5; // default value
+        if (selectedbutton2.getId() == R.id.tujuhdetik)
+            delayperiode = 7;
+        if (selectedbutton2.getId() == R.id.sepuluhdetik)
+            delayperiode = 10;
+        Welcom.delay = delayperiode;
+
+        Welcom.tipetest = 2;
+        startActivity(intent);
+        Toast.makeText(this, "Starting Audio Test at " + lokasi, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (locationReceiver != null) {
+            unregisterReceiver(locationReceiver);
+        }
+    }
+
 
     private void exportData() {
         DatabaseHandler db = new DatabaseHandler(MainWindow.this);
@@ -138,19 +216,6 @@ public class MainWindow extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_LOCATION) {
-            if (resultCode == RESULT_OK && data != null) {
-                String lokasi = data.getStringExtra("lokasi");
-                startTest(1, lokasi); // Change testType according to your logic
-            } else {
-                Toast.makeText(this, "Failed to get location.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void logout() {
         // Clear user session data
         SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -169,4 +234,3 @@ public class MainWindow extends AppCompatActivity {
         finish();
     }
 }
-

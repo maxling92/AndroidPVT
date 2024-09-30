@@ -44,8 +44,10 @@ public class HasilPengukuran extends AppCompatActivity {
     private static String currentAddress;
     private static String lokasi;
     private List<Hasil> results;
+    private Hasil currentResult;
     public static int cur_idx = 0;
     private ManagerAPI managerAPI;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,18 @@ public class HasilPengukuran extends AppCompatActivity {
         String namaPerusahaan = intent.getStringExtra("namaPerusahaan");
 
         if (intent != null && intent.hasExtra("lokasi")) {
-            lokasi = intent.getStringExtra("lokasi");
+            lokasi = intent.getStringExtra("lokasi"); // Get the passed location
+        } else if (item != null) {
+            // Fallback: If no location is passed via Intent, use the location from the Hasil object
+            lokasi = item.getLokasi();
+        } else {
+            lokasi = "Unknown Location"; // If no location is available, set to Unknown
+        }
+
+        // Ensure currentResult is initialized
+        if (results != null && !results.isEmpty()) {
+            currentResult = results.get(cur_idx);
+            currentResult.setLokasi(lokasi);  // Ensure location is assigned to currentResult
         }
 
         Button hapus = findViewById(R.id.hapusbutton);
@@ -140,73 +153,74 @@ public class HasilPengukuran extends AppCompatActivity {
             } else {
                 lokasiLabel.setText(getString(R.string.hasil_lokasilabel) + ": " + getString(R.string.hasil_lokasi_unknown));
             }
+
         }
 
-            TextView hasillabel = findViewById(R.id.hasillabel);
-            if (item.getRataRata() < 240) {
-                hasillabel.setText(getString(R.string.hasil_hasillabel) + ": " + item.getRataRata() + " (" + getString(R.string.hasil_hasilnormal) + ")");
-                hasillabel.setTextColor(Color.BLUE);
-            } else if (item.getRataRata() < 480) {
-                hasillabel.setText(getString(R.string.hasil_hasillabel) + ": " + item.getRataRata() + " (" + getString(R.string.hasil_hasilringan) + ")");
-                hasillabel.setTextColor(Color.GREEN);
-            } else if (item.getRataRata() < 540) {
-                hasillabel.setText(getString(R.string.hasil_hasillabel) + ": " + item.getRataRata() + " (" + getString(R.string.hasil_hasilsedang) + ")");
-                hasillabel.setTextColor(Color.YELLOW);
-            } else {
-                hasillabel.setText(getString(R.string.hasil_hasillabel) + ": " + item.getRataRata() + " (" + getString(R.string.hasil_hasilberat) + ")");
-                hasillabel.setTextColor(Color.RED);
-            }
-
-            TextView gagal = findViewById(R.id.gagallabel);
-            gagal.setText(getString(R.string.hasil_gagallabel) + ": " + item.getGagal() + " " + getString(R.string.hasil_frekuensilabel));
-
-            String res = item.getJeda().substring(1, item.getJeda().length() - 1);
-            String[] jedas = res.split(",");
-            TableLayout tbllayout = findViewById(R.id.tabelhasil);
-            int i = 0;
-            while (i < jedas.length) {
-                TableRow tbrow = new TableRow(this);
-                TableRow.LayoutParams lp0 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-                tbrow.setLayoutParams(lp0);
-                TextView t1v = new TextView(this);
-                t1v.setText("" + (i + 1));
-                t1v.setTextColor(Color.BLACK);
-                t1v.setGravity(Gravity.CENTER_HORIZONTAL);
-                TableRow.LayoutParams lp1 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
-                lp1.column = 0;
-                t1v.setGravity(Gravity.CENTER_HORIZONTAL);
-                t1v.setLayoutParams(lp1);
-                tbrow.addView(t1v);
-                TextView t2v = new TextView(this);
-                t2v.setText(jedas[i]);
-                t2v.setTextColor(Color.BLACK);
-                t2v.setGravity(Gravity.RIGHT);
-                TableRow.LayoutParams lp2 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
-                lp2.column = 1;
-                t2v.setGravity(Gravity.CENTER_HORIZONTAL);
-                t2v.setLayoutParams(lp2);
-                tbrow.addView(t2v);
-                i = i + 1;
-                TextView t3v = new TextView(this);
-                t3v.setText("" + (i + 1));
-                t3v.setTextColor(Color.BLACK);
-                t3v.setGravity(Gravity.CENTER_HORIZONTAL);
-                TableRow.LayoutParams lp3 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
-                lp3.column = 3;
-                t3v.setLayoutParams(lp3);
-                tbrow.addView(t3v);
-                TextView t4v = new TextView(this);
-                t4v.setText(jedas[i]);
-                t4v.setTextColor(Color.BLACK);
-                t4v.setGravity(Gravity.CENTER_HORIZONTAL);
-                TableRow.LayoutParams lp4 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
-                lp4.column = 4;
-                t4v.setLayoutParams(lp4);
-                tbrow.addView(t4v);
-                i = i + 1;
-                tbllayout.addView(tbrow);
-            }
+        TextView hasillabel = findViewById(R.id.hasillabel);
+        if (item.getRataRata() < 240) {
+            hasillabel.setText(getString(R.string.hasil_hasillabel) + ": " + item.getRataRata() + " (" + getString(R.string.hasil_hasilnormal) + ")");
+            hasillabel.setTextColor(Color.BLUE);
+        } else if (item.getRataRata() < 480) {
+            hasillabel.setText(getString(R.string.hasil_hasillabel) + ": " + item.getRataRata() + " (" + getString(R.string.hasil_hasilringan) + ")");
+            hasillabel.setTextColor(Color.GREEN);
+        } else if (item.getRataRata() < 540) {
+            hasillabel.setText(getString(R.string.hasil_hasillabel) + ": " + item.getRataRata() + " (" + getString(R.string.hasil_hasilsedang) + ")");
+            hasillabel.setTextColor(Color.YELLOW);
+        } else {
+            hasillabel.setText(getString(R.string.hasil_hasillabel) + ": " + item.getRataRata() + " (" + getString(R.string.hasil_hasilberat) + ")");
+            hasillabel.setTextColor(Color.RED);
         }
+
+        TextView gagal = findViewById(R.id.gagallabel);
+        gagal.setText(getString(R.string.hasil_gagallabel) + ": " + item.getGagal() + " " + getString(R.string.hasil_frekuensilabel));
+
+        String res = item.getJeda().substring(1, item.getJeda().length() - 1);
+        String[] jedas = res.split(",");
+        TableLayout tbllayout = findViewById(R.id.tabelhasil);
+        int i = 0;
+        while (i < jedas.length) {
+            TableRow tbrow = new TableRow(this);
+            TableRow.LayoutParams lp0 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+            tbrow.setLayoutParams(lp0);
+            TextView t1v = new TextView(this);
+            t1v.setText("" + (i + 1));
+            t1v.setTextColor(Color.BLACK);
+            t1v.setGravity(Gravity.CENTER_HORIZONTAL);
+            TableRow.LayoutParams lp1 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+            lp1.column = 0;
+            t1v.setGravity(Gravity.CENTER_HORIZONTAL);
+            t1v.setLayoutParams(lp1);
+            tbrow.addView(t1v);
+            TextView t2v = new TextView(this);
+            t2v.setText(jedas[i]);
+            t2v.setTextColor(Color.BLACK);
+            t2v.setGravity(Gravity.RIGHT);
+            TableRow.LayoutParams lp2 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+            lp2.column = 1;
+            t2v.setGravity(Gravity.CENTER_HORIZONTAL);
+            t2v.setLayoutParams(lp2);
+            tbrow.addView(t2v);
+            i = i + 1;
+            TextView t3v = new TextView(this);
+            t3v.setText("" + (i + 1));
+            t3v.setTextColor(Color.BLACK);
+            t3v.setGravity(Gravity.CENTER_HORIZONTAL);
+            TableRow.LayoutParams lp3 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+            lp3.column = 3;
+            t3v.setLayoutParams(lp3);
+            tbrow.addView(t3v);
+            TextView t4v = new TextView(this);
+            t4v.setText(jedas[i]);
+            t4v.setTextColor(Color.BLACK);
+            t4v.setGravity(Gravity.CENTER_HORIZONTAL);
+            TableRow.LayoutParams lp4 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+            lp4.column = 4;
+            t4v.setLayoutParams(lp4);
+            tbrow.addView(t4v);
+            i = i + 1;
+            tbllayout.addView(tbrow);
+        }
+    }
 
 
     private void checkPermissionMaps() {
@@ -232,6 +246,10 @@ public class HasilPengukuran extends AppCompatActivity {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             getAddressFromLocation(latitude, longitude);
+
+            if (currentResult != null) {
+                currentResult.setLokasi(currentAddress);  // Update current result with the address
+            }
         }
     };
 
@@ -287,9 +305,14 @@ public class HasilPengukuran extends AppCompatActivity {
 
             String namaobservant = results.get(cur_idx).getNamaObservant();
 
-            String lokasi = results.get(cur_idx).getLokasi();
+            if (currentResult != null && currentResult.getLokasi() != null) {
+                currentResult.setLokasi(currentResult.getLokasi());  // Ensure location is saved
+            } else {
+                currentResult.setLokasi("Location unknown");  // Default if no location is found
+            }
 
-            db.addHasil(results.get(cur_idx), namaobservant);
+
+            db.addHasil(currentResult, currentResult.getNamaObservant());
         }
     };
 
@@ -346,6 +369,8 @@ public class HasilPengukuran extends AppCompatActivity {
             else
                 HasilPengukuran.this.setTitle("PVT: " + getString(R.string.title_hasilpengukuran) + " " + getString(R.string.mw_suarabtn));
 
+            currentResult = results.get(cur_idx);
+
             Hasil hsl = results.get(cur_idx);
             EditText editnama = (EditText) findViewById(R.id.editnama);
             editnama.setText(hsl.getNamaObservant());
@@ -366,11 +391,16 @@ public class HasilPengukuran extends AppCompatActivity {
             TextView tanggal = (TextView) findViewById(R.id.tipelabel);
             tanggal.setText(getString(R.string.hasil_tipelabel) + ": " + hsl.getTanggal().toString());
 
-            TextView lokasiLabel = findViewById(R.id.lokasilabel);
-            if (lokasi != null) {
-                lokasiLabel.setText(getString(R.string.hasil_lokasilabel) + ": " + lokasi);
+            if (currentResult != null) {
+                TextView lokasiLabel = findViewById(R.id.lokasilabel);
+                if (currentResult.getLokasi() != null && !currentResult.getLokasi().isEmpty()) {
+                    lokasiLabel.setText(getString(R.string.hasil_lokasilabel) + ": " + currentResult.getLokasi());
+                } else {
+                    lokasiLabel.setText(getString(R.string.hasil_lokasilabel) + ": Lokasi Tidak Diketahui");
+                }
             } else {
-                lokasiLabel.setText(getString(R.string.hasil_lokasilabel) + ": Lokasi Tidak Diketahui");
+                // Handle null case (e.g., show a default message)
+                Log.e("HasilPengukuran", "currentResult is null");
             }
 
             TextView hasil = (TextView) findViewById(R.id.hasillabel);

@@ -250,9 +250,18 @@ public class FileHandler {
         boolean isSuccessful = false;
         try {
             String jsonData = createJsonFromData(hsls);
+            String namadata = ""; // Initialize an empty namadata
+
+            // Extract namadata from the first result (assuming all have the same namadata)
+            if (hsls.length > 0 && hsls[0] instanceof Hasil) {
+                Hasil firstHasil = (Hasil) hsls[0];
+                namadata = firstHasil.getNamadata(); // Get namadata from the Hasil object
+            }
+
+            // Modify the request URL or file name here, if needed
             RequestBody body = RequestBody.create(jsonData, MediaType.get("application/json; charset=utf-8"));
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(url + "/" + namadata) // Append namadata to the URL for sending
                     .post(body)
                     .build();
 
@@ -270,6 +279,7 @@ public class FileHandler {
         }
         return isSuccessful;
     }
+
 
     private String createJsonFromData(Object[] hsls) {
         Gson gson = new Gson();

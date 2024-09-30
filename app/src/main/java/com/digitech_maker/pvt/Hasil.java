@@ -46,7 +46,7 @@ public class Hasil {
     private String namaobservant;
 
     @SerializedName("lokasi")
-    private String lokasi;
+    private  String lokasi;
 
     @SerializedName("hasilData")
     private int[] hasilData;
@@ -64,6 +64,11 @@ public class Hasil {
         } catch (DateTimeParseException e) {
             System.out.println("Error: Date format should be " + DATE_FORMAT + ". Received: " + tgllahir);
         }
+    }
+
+    public Hasil(String namaObservant, String jabatan, String tglLahir, String namaPerusahaan, String lokasi) {
+        this(namaObservant, jabatan, tglLahir, namaPerusahaan);  // Call the original constructor
+        this.lokasi = lokasi;  // Set the lokasi
     }
 
     // Getter methods
@@ -113,7 +118,7 @@ public class Hasil {
         return hasilData;
     }
 
-    public String getLokasi() {
+    public  String getLokasi() {
         return lokasi;
     }
 

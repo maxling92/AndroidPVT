@@ -4,7 +4,9 @@ import android.content.Context;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -88,96 +90,199 @@ public class Welcom extends AppCompatActivity {
             LocalDate date = LocalDate.parse(tgllahir, inputFormatter);
             String formattedTglLahir = date.format(outputFormatter);
 
-            Button mulai = findViewById(R.id.buttonstart);
+            Button mulai = (Button) findViewById(R.id.buttonstart);
             mulai.setVisibility(View.INVISIBLE);
-            if (tipetest == 1) {
-                btn = findViewById(R.id.buttonlight);
+            if (tipetest==1) {
+                btn = (Button) findViewById(R.id.buttonlight);
                 btn.setVisibility(View.VISIBLE);
                 btn.setText("VISUAL");
-                Button btn2 = findViewById(R.id.buttonsound);
+                Button btn2 = (Button) findViewById(R.id.buttonsound);
                 btn2.setVisibility(View.VISIBLE);
                 btn2.setText("VISUAL");
             } else {
-                Button button2 = findViewById(R.id.buttonlight);
+                Button button2 = (Button) findViewById(R.id.buttonlight);
                 button2.setVisibility(View.VISIBLE);
                 button2.setText("AUDIO");
-                btn = findViewById(R.id.buttonsound);
+                btn = (Button) findViewById(R.id.buttonsound);
                 btn.setVisibility(View.VISIBLE);
                 btn.setText("AUDIO");
             }
-
+            //btn.setGravity(Gravity.RIGHT);
+            //TextView teks = (TextView) findViewById(R.id.textView2);
             counter.setText("Ready!!");
 
-            Runnable runnable = new Runnable() {
-                public void run() {
-                    try {
-                        hasil = new int[frekuensi];
-                        gagal = 0;
-                        for (int j = 0; j < frekuensi; j++) {
-                            int sleepingtime = Math.abs(rand.nextInt(delay * 1000)) + 2000;
-                            SystemClock.sleep(sleepingtime);
-                            thecounter_begin = System.currentTimeMillis();
-                            threadMsg("HIT IT");
-                            response = false;
-
-                            if (tipetest == 2) { // AUDIO TEST
-                                mp = MediaPlayer.create(Welcom.this, R.raw.bell);
-                                mp.start();
+            if (tipetest==1) {
+                Thread background = new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            //theicon.setImageResource(R.drawable.light_on);
+                            //frekuensi = 6;
+                            hasil = new int[frekuensi];
+                            gagal = 0;
+                            for (int j = 0; j < frekuensi; j++) {
+                                int sleepingtime = Math.abs(rand.nextInt(delay * 1000)) + 2000;
+                                SystemClock.sleep(sleepingtime);
+                                thecounter_begin = System.currentTimeMillis();
+                                threadMsg("HIT IT");
+                                response = false;
+                                int i = 0;
+                                while (!response) {
+                                    SystemClock.sleep(5);
+                                    //i++;
+                                }
+                                hasil[j] = (int) ((thecounter_end-thecounter_begin))-150;
+                                threadMsg(String.valueOf(hasil[j]));
                             }
+                            result = new Hasil(namaobservant, formattedTglLahir, jabatan, namaPerusahaan);
+                            result.setTanggal(String.valueOf(new Date()));
+                            result.setRataRata(hasil);
+                            result.setJeda(Arrays.toString(hasil));
+                            result.setGagal(gagal);
 
-                            while (!response) {
-                                SystemClock.sleep(5);
-                            }
+//                            Button lamp = (Button) findViewById(R.id.buttonlight);
+                            btn.getHandler().post(new Runnable() {
+                                public void run() {
+                                    btn.setVisibility(View.INVISIBLE);
+                                    Button nextbtn = (Button) findViewById(R.id.buttonnext);
+                                    nextbtn.setVisibility(View.VISIBLE);
+                                    //nextbtn.setGravity(Gravity.RIGHT);
+                                    Button backbtn = (Button) findViewById(R.id.buttonback);
+                                    backbtn.setVisibility(View.VISIBLE);
+                                    //backbtn.setGravity(Gravity.LEFT);
 
-                            hasil[j] = (int) ((thecounter_end - thecounter_begin)) - 150;
-                            threadMsg(String.valueOf(hasil[j]));
+                                    Button btnkiri = (Button) findViewById(R.id.buttonlight);
+                                    btnkiri.setVisibility(View.INVISIBLE);
+                                    Button btnkanan = (Button) findViewById(R.id.buttonsound);
+                                    btnkanan.setVisibility(View.INVISIBLE);
+
+                                    counter.setText("DONE");
+                                }
+                            });
+                            //result.setGagal(gagal);
+
+
+                        } catch (Throwable t) {
+                            // just end the background thread
+                            Log.i("Function", "Thread  exception " + t);
                         }
+                    }
 
-                        result = new Hasil(namaobservant, formattedTglLahir, jabatan, namaPerusahaan);
-                        result.setTanggal(new Date().toString());
-                        result.setRataRata(hasil);
-                        result.setJeda(Arrays.toString(hasil));
-                        result.setGagal(gagal);
+                    private void threadMsg(String msg) {
 
-                        btn.getHandler().post(new Runnable() {
-                            public void run() {
-                                btn.setVisibility(View.INVISIBLE);
-                                Button nextbtn = findViewById(R.id.buttonnext);
-                                nextbtn.setVisibility(View.VISIBLE);
-                                Button backbtn = findViewById(R.id.buttonback);
-                                backbtn.setVisibility(View.VISIBLE);
-                                Button btnkiri = findViewById(R.id.buttonlight);
-                                btnkiri.setVisibility(View.INVISIBLE);
-                                Button btnkanan = findViewById(R.id.buttonsound);
-                                btnkanan.setVisibility(View.INVISIBLE);
-                                counter.setText("DONE");
+                        if (!msg.equals(null) && !msg.equals("")) {
+                            Message msgObj = handler.obtainMessage();
+                            Bundle b = new Bundle();
+                            b.putString("message", msg);
+                            msgObj.setData(b);
+                            handler.sendMessage(msgObj);
+                        }
+                    }
+
+                    private final Handler handler = new Handler() {
+
+                        public void handleMessage(Message msg) {
+                            String aResponse = msg.getData().getString("message");
+                            counter.setText(aResponse);
+                        }
+                    };
+
+                });
+                background.start();
+            } else {
+                Thread background = new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            //frekuensi=6;
+                            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+//                            mp = MediaPlayer.create(Welcom.this, R.raw.bell);
+                            hasil = new int[frekuensi];
+                            gagal = 0;
+                            for (int j = 0; j < frekuensi; j++) {
+                                int sleepingtime = Math.abs(rand.nextInt(delay * 1000)) + 2000;
+                                SystemClock.sleep(sleepingtime);
+                                toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,BEEP_LENGTH);
+//           s                     mp.start();
+                                SystemClock.sleep(100);
+                                thecounter_begin = System.currentTimeMillis();
+                                response = false;
+                                int i = 0;
+                                while (!response) {
+                                    SystemClock.sleep(5);
+                                    if (i>SLEEP_ATTACT) {
+                                        toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, BEEP_LENGTH - 25);
+                                        i=0;
+                                    } else {
+                                        i++;
+                                    }
+
+                                }
+//                                mp.stop();
+                                hasil[j] = (int) ((thecounter_end-thecounter_begin))-BEEP_LENGTH;
+//                                mp.prepare();
+                                threadMsg(String.valueOf(hasil[j]));
                             }
-                        });
-                    } catch (Throwable t) {
-                        Log.i("Function", "Thread  exception " + t);
-                    }
-                }
+//                            mp.release();
+                            toneGen1.release();
+                            result = new Hasil(namaobservant, formattedTglLahir, jabatan, namaPerusahaan);
+                            result.setTanggal(String.valueOf(new Date()));
+                            result.setRataRata(hasil);
+                            result.setJeda(Arrays.toString(hasil));
+                            result.setGagal(gagal);
+                            result.setJenisTest(2);
 
-                private void threadMsg(String msg) {
-                    if (msg != null && !msg.isEmpty()) {
-                        Message msgObj = handler.obtainMessage();
-                        Bundle b = new Bundle();
-                        b.putString("message", msg);
-                        msgObj.setData(b);
-                        handler.sendMessage(msgObj);
-                    }
-                }
+                            btn.getHandler().post(new Runnable() {
+                                public void run() {
+                                    btn.setVisibility(View.INVISIBLE);
 
-                private final Handler handler = new Handler() {
-                    public void handleMessage(Message msg) {
-                        String aResponse = msg.getData().getString("message");
-                        counter.setText(aResponse);
-                    }
-                };
-            };
+                                    Button nextbtn = (Button) findViewById(R.id.buttonnext);
+                                    nextbtn.setVisibility(View.VISIBLE);
+                                    //nextbtn.setGravity(Gravity.RIGHT);
+                                    Button backbtn = (Button) findViewById(R.id.buttonback);
+                                    backbtn.setVisibility(View.VISIBLE);
+                                    //backbtn.setGravity(Gravity.LEFT);
 
-            Thread background = new Thread(runnable);
-            background.start();
+                                    Button btnkiri = (Button) findViewById(R.id.buttonlight);
+                                    btnkiri.setVisibility(View.INVISIBLE);
+                                    Button btnkanan = (Button) findViewById(R.id.buttonsound);
+                                    btnkanan.setVisibility(View.INVISIBLE);
+
+                                    counter.setText("DONE");
+                                }
+                            });
+
+
+                        } catch (Throwable t) {
+                            // just end the background thread
+                            Log.i("Function", "Thread  exception " + t);
+                        }
+                    }
+
+                    private void threadMsg(String msg) {
+
+                        if (!msg.equals(null) && !msg.equals("")) {
+                            Message msgObj = handler.obtainMessage();
+                            Bundle b = new Bundle();
+                            b.putString("message", msg);
+                            msgObj.setData(b);
+                            handler.sendMessage(msgObj);
+                        }
+                    }
+
+                    private final Handler handler = new Handler() {
+
+                        public void handleMessage(Message msg) {
+                            String aResponse = msg.getData().getString("message");
+                            counter.setText(aResponse);
+                        }
+                    };
+
+                });
+                background.start();
+
+            }
+            //EditText address=(EditText)findViewById(R.id.addr);
+            //r.setName(name.getText().toString());
+            //r.setAddress(address.getText().toString());
         }
     };
 
