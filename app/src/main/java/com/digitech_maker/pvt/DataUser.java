@@ -32,18 +32,16 @@ public class DataUser {
     }
 
     // Method to store user data (including formatted birth date)
-    public void UserActive(String namaobservant, String tgllahir, String jabatan, String namaPerusahaan) {
+    public void UserActive(String namaobservant, String tgllahir, String namaPerusahaan) {
         try {
 
             tgllahir = tgllahir.replace("/", "-");
-            // Konversi string tanggal lahir menjadi format Date
             Date dateOfBirth = dateFormat.parse(tgllahir); // Parse String to Date using SimpleDateFormat
             String formattedDate = dateFormat.format(dateOfBirth); // Format it back to String if needed
 
             // Simpan data dalam SharedPreferences
             editor.putString(KEY_NAMAOBSERVANT, namaobservant);
             editor.putString(KEY_TGLLAHIR, formattedDate); // Save the formatted date string
-            editor.putString(KEY_JABATAN, jabatan);
             editor.putString(KEY_PERUSAHAAN, namaPerusahaan);
             editor.putBoolean(KEY_IS_LOGGED_IN, true);
             editor.apply();
@@ -59,30 +57,8 @@ public class DataUser {
         editor.clear();
         editor.apply();
     }
-
     // Check if the user is logged in
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
     }
-
-    // Method to retrieve user's date of birth and convert it back to Date object
-    public Date getTglLahir() {
-        String tgllahirStr = sharedPreferences.getString(KEY_TGLLAHIR, null);
-        if (tgllahirStr != null) {
-            try {
-                // Parse the stored string back into a Date object
-                return dateFormat.parse(tgllahirStr);
-            } catch (ParseException e) {
-                e.printStackTrace(); // Handle parsing error
-                return null; // Return null if parsing fails
-            }
-        }
-        return null; // Return null if no date found
-    }
-
-    // Optional: Method to retrieve user's date of birth as string (if needed in string format)
-    public String getTglLahirAsString() {
-        return sharedPreferences.getString(KEY_TGLLAHIR, "");
-    }
-
 }

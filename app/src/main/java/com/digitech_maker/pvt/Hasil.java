@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Hasil {
 
@@ -30,16 +32,11 @@ public class Hasil {
     @SerializedName("tanggal")
     private String tanggal;
 
-    @SerializedName("jabatan")
-    private String jabatan;
-
     @SerializedName("namaPerusahaan")
     private String namaPerusahaan;
 
     // LocalDate will be converted to String for Gson serialization
     @SerializedName("tgllahir")
-    private String tgllahirString;
-
     private LocalDate tgllahir;
 
     @SerializedName("namaobservant")
@@ -48,27 +45,32 @@ public class Hasil {
     @SerializedName("lokasi")
     private  String lokasi;
 
-    @SerializedName("hasilData")
-    private int[] hasilData;
-
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     // Constructor
-    public Hasil(String namaobservant, String jabatan, String tgllahir, String namaPerusahaan) {
+    public Hasil(String namaobservant, String tgllahir, String namaPerusahaan) {
         this.namaobservant = namaobservant;
         this.namaPerusahaan = namaPerusahaan;
-        this.jabatan = jabatan;
         try {
             this.tgllahir = LocalDate.parse(tgllahir, formatter);
-            this.tgllahirString = this.tgllahir.format(formatter);
         } catch (DateTimeParseException e) {
             System.out.println("Error: Date format should be " + DATE_FORMAT + ". Received: " + tgllahir);
         }
     }
 
-    public Hasil(String namaObservant, String jabatan, String tglLahir, String namaPerusahaan, String lokasi) {
-        this(namaObservant, jabatan, tglLahir, namaPerusahaan);  // Call the original constructor
-        this.lokasi = lokasi;  // Set the lokasi
+    public List<Integer> getJedaArray() {
+        List<Integer> jedaArray = new ArrayList<>();
+        if (jeda != null && !jeda.isEmpty()) {
+            String[] jedaStrings = jeda.split(",\\s*"); // Memisahkan jeda berdasarkan koma
+            for (String jedaStr : jedaStrings) {
+                try {
+                    jedaArray.add(Integer.parseInt(jedaStr));
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing jeda value: " + jedaStr);
+                }
+            }
+        }
+        return jedaArray;
     }
 
     // Getter methods
@@ -85,15 +87,11 @@ public class Hasil {
     }
 
     public String getTglLahir() {
-        return tgllahir.format(formatter); // Return the formatted date as a String
+        return tgllahir.format(formatter);
     }
 
     public String getNamaObservant() {
         return namaobservant;
-    }
-
-    public String getJabatan() {
-        return jabatan;
     }
 
     public String getnamaPerusahaan() { return namaPerusahaan; }
@@ -106,16 +104,8 @@ public class Hasil {
         return gagal;
     }
 
-    public void generateNamadata(String namaobservant, String tanggal, int number) {
-        this.namadata = namaobservant + "-" + tanggal + "-" + number;
-    }
-
     public String getNamadata() {
         return namadata;
-    }
-
-    public int[] getHasilData() {
-        return hasilData;
     }
 
     public  String getLokasi() {
@@ -146,15 +136,9 @@ public class Hasil {
     public void setTglLahir(String tglLahir) {
         try {
             this.tgllahir = LocalDate.parse(tglLahir, formatter);
-            this.tgllahirString = this.tgllahir.format(formatter);
         } catch (DateTimeParseException e) {
             System.out.println("Error: Date format should be " + DATE_FORMAT + ". Received: " + tglLahir);
         }
-    }
-
-    public void setJabatan(String jbtn) {
-        System.out.println("Setting jabatan: " + jbtn);
-        jabatan = jbtn;
     }
 
     public void setNamaObservant(String nama) {

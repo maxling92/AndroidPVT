@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText namaobservantEditText, passwordEditText, tgllahirEditText, jabatanEditText, namaperusahaanEditText;
+    private EditText namaobservantEditText, passwordEditText, tgllahirEditText, namaperusahaanEditText;
     private Button registerButton;
     private DatabaseHandler db;
     private DataUser dataUser;
@@ -27,8 +27,6 @@ public class RegisterActivity extends AppCompatActivity {
     private Calendar myCalendar = Calendar.getInstance();
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +35,6 @@ public class RegisterActivity extends AppCompatActivity {
         namaobservantEditText = findViewById(R.id.namaobservant);
         passwordEditText = findViewById(R.id.password);
         tgllahirEditText = findViewById(R.id.birthdate);
-        jabatanEditText = findViewById(R.id.position);
         namaperusahaanEditText = findViewById(R.id.company);
         registerButton = findViewById(R.id.registerButton);
         loginLink = findViewById(R.id.loginLink);
@@ -86,30 +83,28 @@ public class RegisterActivity extends AppCompatActivity {
         String namaobservant = namaobservantEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String tgllahir = tgllahirEditText.getText().toString().trim();
-        String jabatan = jabatanEditText.getText().toString().trim();
         String namaPerusahaan = namaperusahaanEditText.getText().toString().trim();
 
-        if (namaobservant.isEmpty() || password.isEmpty() || tgllahir.isEmpty() || jabatan.isEmpty()) {
+        if (namaobservant.isEmpty() || password.isEmpty() || tgllahir.isEmpty() || namaPerusahaan.isEmpty()) {
             Toast.makeText(this, "Please enter all details", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (db != null) {
-            db.addUser(namaobservant, password, tgllahir, jabatan, namaPerusahaan);
-            dataUser.UserActive(namaobservant, tgllahir, jabatan, namaPerusahaan);
+            db.addUser(namaobservant, password, tgllahir, namaPerusahaan);
+            dataUser.UserActive(namaobservant, tgllahir,  namaPerusahaan);
 
             SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("username", namaobservant);
             editor.putString("tgllahir", tgllahir);
-            editor.putString("jabatan", jabatan);
             editor.putString("namaPerusahaan", namaPerusahaan);
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
             Toast.makeText(this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            Intent intent = new Intent(RegisterActivity.this, MainWindow.class);
             startActivity(intent);
             finish();
         } else {

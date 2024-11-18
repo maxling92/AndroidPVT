@@ -24,7 +24,6 @@ public class MainWindow extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION = 102;
     private static final String PREFS_NAME = "MyPrefs";
-    private static final String KEY_LAST_KNOWN_LOCATION = "last_known_location";
     private SharedPreferences sharedPreferences;
     private BroadcastReceiver locationReceiver;
     private String lokasi;
@@ -35,14 +34,12 @@ public class MainWindow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_window);
 
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance(this);
+        dbHandler.getWritableDatabase();
+
         Button btn0 = findViewById(R.id.closebutton);
         btn0.setOnClickListener(v -> finish());
 
-        Button btnekspor = findViewById(R.id.exporttbutton);
-        btnekspor.setOnClickListener(v -> exportData());
-
-        Button btnekspornew = findViewById(R.id.exportnewbutton);
-        btnekspornew.setOnClickListener(v -> exportLatestData());
 
         Button btnreport = findViewById(R.id.reportbutton);
         btnreport.setOnClickListener(v -> showReport());
@@ -176,25 +173,6 @@ public class MainWindow extends AppCompatActivity {
         }
     }
 
-
-    private void exportData() {
-        DatabaseHandler db = new DatabaseHandler(MainWindow.this);
-        List<Hasil> results = db.getAllHasil();
-        if (!results.isEmpty()) {
-            FileHandler fh = new FileHandler(MainWindow.this);
-            fh.exportXlsKeepData(results.toArray());
-        }
-    }
-
-    private void exportLatestData() {
-        DatabaseHandler db = new DatabaseHandler(MainWindow.this);
-        List<Hasil> results = db.getLastHasil();
-        if (!results.isEmpty()) {
-            FileHandler fh = new FileHandler(MainWindow.this);
-            fh.exportXlsKeepData(results.toArray());
-        }
-    }
-
     private void showReport() {
         DatabaseHandler db = new DatabaseHandler(MainWindow.this);
         List<Hasil> results = db.getAllHasil();
@@ -220,6 +198,7 @@ public class MainWindow extends AppCompatActivity {
         // Clear user session data
         SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", false);
         editor.clear();
         editor.apply();
 

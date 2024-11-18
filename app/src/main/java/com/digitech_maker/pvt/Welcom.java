@@ -133,7 +133,7 @@ public class Welcom extends AppCompatActivity {
                                 hasil[j] = (int) ((thecounter_end-thecounter_begin))-150;
                                 threadMsg(String.valueOf(hasil[j]));
                             }
-                            result = new Hasil(namaobservant, formattedTglLahir, jabatan, namaPerusahaan);
+                            result = new Hasil(namaobservant, formattedTglLahir, namaPerusahaan);
                             result.setTanggal(String.valueOf(new Date()));
                             result.setRataRata(hasil);
                             result.setJeda(Arrays.toString(hasil));
@@ -223,7 +223,7 @@ public class Welcom extends AppCompatActivity {
                             }
 //                            mp.release();
                             toneGen1.release();
-                            result = new Hasil(namaobservant, formattedTglLahir, jabatan, namaPerusahaan);
+                            result = new Hasil(namaobservant, formattedTglLahir, namaPerusahaan);
                             result.setTanggal(String.valueOf(new Date()));
                             result.setRataRata(hasil);
                             result.setJeda(Arrays.toString(hasil));
@@ -280,9 +280,6 @@ public class Welcom extends AppCompatActivity {
                 background.start();
 
             }
-            //EditText address=(EditText)findViewById(R.id.addr);
-            //r.setName(name.getText().toString());
-            //r.setAddress(address.getText().toString());
         }
     };
 
@@ -318,7 +315,6 @@ public class Welcom extends AppCompatActivity {
             Intent intent = new Intent(Welcom.this, HasilPengukuran.class);
             intent.putExtra("username", namaobservant);
             intent.putExtra("tgllahir", tgllahir);
-            intent.putExtra("jabatan", jabatan);
             intent.putExtra("namaPerusahaan", namaPerusahaan);
             intent.putExtra("lokasi", lokasi);
             startActivity(intent);

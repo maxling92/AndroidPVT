@@ -1,5 +1,6 @@
 package com.digitech_maker.pvt;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.Manifest;
@@ -27,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,15 +49,11 @@ public class HasilPengukuran extends AppCompatActivity {
     private List<Hasil> results;
     private Hasil currentResult;
     public static int cur_idx = 0;
-    private ManagerAPI managerAPI;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hasil_pengukuran);
-
-        managerAPI = new ManagerAPI();
 
         db = DatabaseHandler.getInstance(this);
         results = db.getAllHasil();
@@ -86,7 +85,6 @@ public class HasilPengukuran extends AppCompatActivity {
         Intent intent = getIntent();
         String namaobservant = intent.getStringExtra("username");
         String tgllahir = intent.getStringExtra("tgllahir");
-        String jabatan = intent.getStringExtra("jabatan");
         String namaPerusahaan = intent.getStringExtra("namaPerusahaan");
 
         if (intent != null && intent.hasExtra("lokasi")) {
@@ -124,10 +122,6 @@ public class HasilPengukuran extends AppCompatActivity {
         edittgllahir.setText(tgllahir);
         edittgllahir.setEnabled(false);
 
-        EditText editjabatan = findViewById(R.id.editjabatan);
-        editjabatan.setText(jabatan);
-        editjabatan.setEnabled(false);
-
         EditText editperusahaan = findViewById(R.id.editperusahaan);
         editperusahaan.setText(namaPerusahaan);
         editperusahaan.setEnabled(false);
@@ -135,7 +129,6 @@ public class HasilPengukuran extends AppCompatActivity {
         if (databaru == 1) {
             editnama.setEnabled(true);
             edittgllahir.setEnabled(true);
-            editjabatan.setEnabled(true);
             editperusahaan.setEnabled(true);
         }
 
@@ -287,7 +280,6 @@ public class HasilPengukuran extends AppCompatActivity {
         public void onClick(View v) {
             EditText editnama = (EditText) findViewById(R.id.editnama);
             results.get(cur_idx).setNamaObservant(editnama.getText().toString());
-
             EditText edittgllahir = (EditText) findViewById(R.id.edittgllahir);
             String tgllahir = edittgllahir.getText().toString();
             if (isValidDate(tgllahir)) {
@@ -296,21 +288,20 @@ public class HasilPengukuran extends AppCompatActivity {
                 edittgllahir.setError("Invalid date format. Use yyyy-MM-dd");
                 return;
             }
-
-            EditText editjabatan = (EditText) findViewById(R.id.editjabatan);
-            results.get(cur_idx).setJabatan(editjabatan.getText().toString());
-
             EditText editperusahaan = (EditText) findViewById(R.id.editperusahaan);
             results.get(cur_idx).setnamaPerusahaan(editperusahaan.getText().toString());
 
             String namaobservant = results.get(cur_idx).getNamaObservant();
+            String tanggal = results.get(cur_idx).getTanggal();
+
+            String namadata = namaobservant + "_" + tanggal;
+            results.get(cur_idx).setNamadata(namadata);
 
             if (currentResult != null && currentResult.getLokasi() != null) {
-                currentResult.setLokasi(currentResult.getLokasi());  // Ensure location is saved
+                currentResult.setLokasi(currentResult.getLokasi());
             } else {
-                currentResult.setLokasi("Location unknown");  // Default if no location is found
+                currentResult.setLokasi("Location unknown");
             }
-
 
             db.addHasil(currentResult, currentResult.getNamaObservant());
         }
@@ -325,29 +316,18 @@ public class HasilPengukuran extends AppCompatActivity {
             }
             Hasil current = results.get(cur_idx);
             if (current != null) {
-                sendDataToWebsite(current);
+                // Gunakan FileHandler untuk mengirim data
+                FileHandler fileHandler = new FileHandler(HasilPengukuran.this);
+                try {
+                    fileHandler.sendData(current);
+                } catch (Exception e) {
+                    // Cetak pesan log kesalahan jika ada exception
+                    Log.e("onKirimClick", "Error saat mengirim data: " + fileHandler.getFullErrorMessage(e));
+                    Toast.makeText(HasilPengukuran.this, "Failed to send data: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
-
-    private void sendDataToWebsite(Hasil hasil) {
-        managerAPI.sendHasil(hasil, new ManagerAPI.DataCallback() {
-            @Override
-            public void onSuccess(ResponseBody responseBody) {
-                runOnUiThread(() -> {
-                    Toast.makeText(HasilPengukuran.this, "Data sent successfully", Toast.LENGTH_SHORT).show();
-                });
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                runOnUiThread(() -> {
-                    Toast.makeText(HasilPengukuran.this, "Failed to send data: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-            }
-        });
-    }
-
 
     private View.OnClickListener onHapusClick = new View.OnClickListener() {
         public void onClick(View v) {
@@ -379,10 +359,6 @@ public class HasilPengukuran extends AppCompatActivity {
             EditText edittgllahir = (EditText) findViewById(R.id.edittgllahir);
             edittgllahir.setText(formatDate(hsl.getTglLahir()));
             edittgllahir.setEnabled(false);
-
-            EditText editjabatan = (EditText) findViewById(R.id.editjabatan);
-            editjabatan.setText(hsl.getJabatan());
-            editjabatan.setEnabled(false);
 
             EditText editperusahaan = (EditText) findViewById(R.id.editperusahaan);
             editperusahaan.setText(hsl.getnamaPerusahaan());

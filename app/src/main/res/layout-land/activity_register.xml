@@ -34,7 +34,7 @@
         android:id="@+id/tgllahir"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:hint="DD-MM-YYYY"
+        android:hint="Tanggal Lahir"
         android:layout_below="@id/password"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
@@ -42,22 +42,13 @@
         android:focusable="false"
         android:background="@android:drawable/editbox_background" />
 
-    <EditText
-        android:id="@+id/jabatan"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:hint="Jabatan"
-        android:layout_below="@id/tgllahir"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:inputType="text" />
 
     <EditText
         android:id="@+id/namaperusahaan"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:hint="Perusahaan"
-        android:layout_below="@id/jabatan"
+        android:layout_below="@id/tgllahir"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:inputType="text"/>
