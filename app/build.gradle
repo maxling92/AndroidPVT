@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 33
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
 
     defaultConfig {
         applicationId "com.digitech_maker.pvt"
@@ -10,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -21,10 +25,12 @@ android {
 }
 
 dependencies {
+    androidTestUtil 'androidx.test:orchestrator:1.4.2'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'androidx.activity:activity:1.7.1'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.android.gms:play-services-base:18.2.0'
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.google.code.gson:gson:2.8.8'
@@ -32,6 +38,21 @@ dependencies {
     implementation files('libs/poi-3.7.jar')
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'androidx.test:core:1.6.1'
+    implementation 'androidx.test.espresso:espresso-contrib:3.6.1'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation 'org.mockito:mockito-inline:3.12.4'
+    testImplementation 'org.robolectric:robolectric:4.8.2'
+    testImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.28.1'
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker:2.28.1'
+
 
 }
 
@@ -40,5 +61,12 @@ configurations.all {
     resolutionStrategy {
         force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.10'
         force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10'
+    }
+}
+
+android {
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }

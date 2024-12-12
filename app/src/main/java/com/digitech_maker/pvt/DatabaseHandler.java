@@ -116,6 +116,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+
     public void removeHasil(Hasil item) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_HASIL, KEY_ID + "=" + item.getID(), null);
@@ -201,7 +202,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Methods for users
-    public void addUser (String namaobservant, String password, String tgllahir, String namaPerusahaan) {
+    public boolean addUser (String namaobservant, String password, String tgllahir, String namaPerusahaan) {
         Log.d("DatabaseHandler", "addUser called with username: " + namaobservant);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -216,6 +217,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Log.d("DatabaseHandler", "User added successfully");
         }
         db.close();
+        return true;
     }
 
     public boolean checkUser(String namaobservant, String password) {

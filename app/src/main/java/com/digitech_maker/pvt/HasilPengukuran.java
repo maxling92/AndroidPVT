@@ -42,6 +42,7 @@ public class HasilPengukuran extends AppCompatActivity {
 
     private DatabaseHandler db;
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String TESTDATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     private static final int LOCATION_REQUEST_CODE = 10;
     private LocationManager locationManager;
     private static String currentAddress;
@@ -138,7 +139,8 @@ public class HasilPengukuran extends AppCompatActivity {
             if (item.getJenistest() == 2)
                 this.setTitle("PVT: " + getString(R.string.title_hasilpengukuran) + " " + getString(R.string.mw_suarabtn));
 
-            tipe.setText(getString(R.string.hasil_tipelabel) + ": " + item.getTanggal().toString());
+            String formattedDate = formatTanggal(item.getTanggal());
+            tipe.setText(getString(R.string.hasil_tipelabel) + ": " + formattedDate);
 
             TextView lokasiLabel = findViewById(R.id.lokasilabel);
             if (lokasi != null && !lokasi.isEmpty()) {
@@ -463,6 +465,18 @@ public class HasilPengukuran extends AppCompatActivity {
         }
     }
 
+    private String formatTanggal(String dateStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat(TESTDATE_FORMAT, Locale.getDefault());
+            Date date = inputFormat.parse(dateStr);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            Log.e("HasilPengukuran", "Error parsing tanggal: " + dateStr, e);
+            return dateStr;
+        }
+    }
+
     private void displayHasil(Hasil hasil) {
         // Update this method to display a single Hasil item
         Log.d("HasilPengukuran", "Displaying Hasil: " + hasil.getNamaObservant());
@@ -484,6 +498,7 @@ public class HasilPengukuran extends AppCompatActivity {
             return false;
         }
     }
+
 
 
     protected void onDestroy() {

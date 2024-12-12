@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Hasil {
 
@@ -129,8 +130,15 @@ public class Hasil {
     }
 
     public void setTanggal(String dt) {
-        System.out.println("Setting tanggal: " + dt);
-        tanggal = dt;
+        try {
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.getDefault());
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            LocalDate parsedDate = LocalDate.parse(dt, inputFormatter);
+            tanggal = parsedDate.format(outputFormatter);
+        } catch (DateTimeParseException e) {
+            System.out.println("Error parsing date: " + dt);
+            tanggal = dt; // Simpan dalam format asli jika parsing gagal
+        }
     }
 
     public void setTglLahir(String tglLahir) {

@@ -48,8 +48,9 @@ public class FileHandler {
 
             @Override
             public void onResponseError(String error) {
-                Log.e("FileHandler", "Gagal mengirim data: " + error);
-                Toast.makeText(context, "Gagal mengirim data: " + error, Toast.LENGTH_LONG).show();
+                String fullErrorMessage = getFullErrorMessage(new Exception(error));
+                Log.e("FileHandler", "Gagal mengirim data: " + fullErrorMessage);
+                Toast.makeText(context, "Gagal mengirim data: " + fullErrorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }

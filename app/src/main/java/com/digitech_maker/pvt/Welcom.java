@@ -20,10 +20,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 public class Welcom extends AppCompatActivity {
@@ -134,7 +136,8 @@ public class Welcom extends AppCompatActivity {
                                 threadMsg(String.valueOf(hasil[j]));
                             }
                             result = new Hasil(namaobservant, formattedTglLahir, namaPerusahaan);
-                            result.setTanggal(String.valueOf(new Date()));
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+                            result.setTanggal(sdf.format(new Date()));
                             result.setRataRata(hasil);
                             result.setJeda(Arrays.toString(hasil));
                             result.setGagal(gagal);

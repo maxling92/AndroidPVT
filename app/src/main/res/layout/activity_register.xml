@@ -11,33 +11,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:hint="Password"
         android:inputType="textPassword"
-        android:layout_marginTop="8dp"/>
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/birthdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:focusable="false"
         android:hint="Tanggal Lahir"
         android:inputType="date"
-        android:layout_marginTop="8dp"
-        android:focusable="false"
-        android:clickable="true"/>
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:hint="Perusahaan"
         android:inputType="text"
-        android:layout_marginTop="8dp"/>
+        android:minHeight="48dp" />
 
     <Button
         android:id="@+id/registerButton"

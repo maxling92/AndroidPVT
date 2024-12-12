@@ -19,13 +19,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText namaobservantEditText, passwordEditText, tgllahirEditText, namaperusahaanEditText;
+    public EditText namaobservantEditText, passwordEditText, tgllahirEditText, namaperusahaanEditText;
     private Button registerButton;
-    private DatabaseHandler db;
-    private DataUser dataUser;
+    public DatabaseHandler db;
+    public DataUser dataUser;
     private TextView loginLink;
     private Calendar myCalendar = Calendar.getInstance();
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +82,14 @@ public class RegisterActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void registerUser() {
+    public void registerUser() {
         String namaobservant = namaobservantEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String tgllahir = tgllahirEditText.getText().toString().trim();
         String namaPerusahaan = namaperusahaanEditText.getText().toString().trim();
 
         if (namaobservant.isEmpty() || password.isEmpty() || tgllahir.isEmpty() || namaPerusahaan.isEmpty()) {
-            Toast.makeText(this, "Please enter all details", Toast.LENGTH_SHORT).show();
+            showToast("Please enter all details");
             return;
         }
 
@@ -102,11 +105,11 @@ public class RegisterActivity extends AppCompatActivity {
             editor.putBoolean("isLoggedIn", true);
             editor.apply();
 
-            Toast.makeText(this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
+            showToast("User Registered Successfully");;
 
             Intent intent = new Intent(RegisterActivity.this, MainWindow.class);
             startActivity(intent);
-            finish();
+
         } else {
             Log.e("RegisterActivity", "DatabaseHandler is null");
         }
