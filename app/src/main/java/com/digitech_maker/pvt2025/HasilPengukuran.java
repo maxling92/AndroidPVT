@@ -1,6 +1,5 @@
-package com.digitech_maker.pvt;
+package com.digitech_maker.pvt2025;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.Manifest;
@@ -27,16 +26,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.digitech_maker.pvt.R;
+
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import okhttp3.ResponseBody;
 
 public class HasilPengukuran extends AppCompatActivity {
 
@@ -467,7 +464,7 @@ public class HasilPengukuran extends AppCompatActivity {
 
     private String formatTanggal(String dateStr) {
         try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.getDefault());
+            SimpleDateFormat inputFormat = new SimpleDateFormat("dd-mm-yyyy HH:mm:ss", Locale.getDefault());
             SimpleDateFormat outputFormat = new SimpleDateFormat(TESTDATE_FORMAT, Locale.getDefault());
             Date date = inputFormat.parse(dateStr);
             return outputFormat.format(date);

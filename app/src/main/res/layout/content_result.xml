@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.digitech_maker.pvt.Result"
+    tools:context="com.digitech_maker.pvt2025.Result"
     tools:showIn="@layout/activity_result">
 
     <TextView

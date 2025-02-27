@@ -7,7 +7,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="com.digitech_maker.pvt.RegisterActivity">
+    tools:context="com.digitech_maker.pvt2025.RegisterActivity">
 
     <EditText
         android:id="@+id/namaobservant"

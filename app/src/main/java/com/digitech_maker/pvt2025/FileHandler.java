@@ -1,4 +1,4 @@
-package com.digitech_maker.pvt;
+package com.digitech_maker.pvt2025;
 
 import android.content.Context;
 import android.util.Log;
@@ -19,15 +19,16 @@ public class FileHandler {
     public Map<String, Object> prepareDataForTransfer(Hasil hasil) {
         Map<String, Object> data = new HashMap<>();
         data.put("namaobservant", hasil.getNamaObservant());
-        data.put("namadata", hasil.getNamadata());
-        data.put("jeda", hasil.getJedaArray()); // Pastikan ini mengembalikan array int atau Integer
-        data.put("gagal", hasil.getGagal());
-        data.put("rata_rata", hasil.getRataRata());
-        data.put("jenistest", hasil.getJenistest());
-        data.put("tanggal", hasil.getTanggal());
-        data.put("namaPerusahaan", hasil.getnamaPerusahaan());
         data.put("tgllahir", hasil.getTglLahir());
+        data.put("namaPerusahaan", hasil.getnamaPerusahaan());
+        data.put("namadata", hasil.getNamadata());
+        data.put("tanggal", hasil.getTanggal());
         data.put("lokasi", hasil.getLokasi());
+        data.put("jenistest", hasil.getJenistest());
+        data.put("rata_rata", hasil.getRataRata());
+        data.put("gagal", hasil.getGagal());
+        data.put("jeda", hasil.getJedaArray()); // Pastikan ini mengembalikan array int atau Integer
+
 
         return data;
     }

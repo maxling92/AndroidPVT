@@ -1,4 +1,4 @@
-package com.digitech_maker.pvt;
+package com.digitech_maker.pvt2025;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.digitech_maker.pvt.R;
 
 import java.util.List;
 

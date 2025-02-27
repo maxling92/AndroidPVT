@@ -1,6 +1,5 @@
-package com.digitech_maker.pvt;
+package com.digitech_maker.pvt2025;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.digitech_maker.pvt.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

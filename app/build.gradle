@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace 'com.digitech_maker.pvt2025'
     compileSdkVersion 33
     testOptions {
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
     defaultConfig {
-        applicationId "com.digitech_maker.pvt"
+        applicationId "com.digitech_maker.pvt2025"
         minSdkVersion 27
         targetSdkVersion 33
         versionCode 1

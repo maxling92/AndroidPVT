@@ -1,4 +1,4 @@
-package com.digitech_maker.pvt;
+package com.digitech_maker.pvt2025;
 
 import android.app.Application;
 import androidx.test.ext.junit.runners.AndroidJUnit4;

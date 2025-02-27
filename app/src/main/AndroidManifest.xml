@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.digitech_maker.pvt">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,15 +11,15 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.digitech_maker.pvt.MyApplication"
+        android:name="com.digitech_maker.pvt2025.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/original"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <!-- KondisiAkun as Launcher -->
-        <activity android:name=".KondisiAkun"
+        <activity android:name="com.digitech_maker.pvt2025.KondisiAkun"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,16 +28,16 @@
         </activity>
 
         <!-- Other activities -->
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainWindow" />
-        <activity android:name=".Welcom" />
-        <activity android:name=".LocationActivity"/>
+        <activity android:name="com.digitech_maker.pvt2025.RegisterActivity" />
+        <activity android:name="com.digitech_maker.pvt2025.LoginActivity" />
+        <activity android:name="com.digitech_maker.pvt2025.MainWindow" />
+        <activity android:name="com.digitech_maker.pvt2025.Welcom" />
+        <activity android:name="com.digitech_maker.pvt2025.LocationActivity"/>
         <activity
-            android:name=".Result"
+            android:name="com.digitech_maker.pvt2025.Result"
             android:label="@string/title_activity_result"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".HasilPengukuran" />
+        <activity android:name="com.digitech_maker.pvt2025.HasilPengukuran" />
 
         <!-- Google Play services metadata -->
         <meta-data

@@ -1,5 +1,5 @@
 // LocationActivity.java
-package com.digitech_maker.pvt;
+package com.digitech_maker.pvt2025;
 
 import android.Manifest;
 import android.content.Intent;

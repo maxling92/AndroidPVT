@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.digitech_maker.pvt.HasilPengukuran">
+    tools:context="com.digitech_maker.pvt2025.HasilPengukuran">
 
     <RelativeLayout
         android:id="@+id/RelativeLayout01"

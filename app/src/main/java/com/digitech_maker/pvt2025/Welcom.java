@@ -1,7 +1,5 @@
-package com.digitech_maker.pvt;
+package com.digitech_maker.pvt2025;
 
-import android.content.Context;
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
@@ -18,7 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+
+import com.digitech_maker.pvt.R;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -39,6 +38,7 @@ public class Welcom extends AppCompatActivity {
     private MediaPlayer mp = null;
     private int BEEP_LENGTH = 50;
     private int SLEEP_ATTACT = 500;
+    private DatabaseHandler dbHandler;
 
     private String namaobservant;
     private String tgllahir;
@@ -83,6 +83,8 @@ public class Welcom extends AppCompatActivity {
 
         counter = findViewById(R.id.textView2);
         rand = new Random();
+
+        dbHandler = DatabaseHandler.getInstance(this);
     }
 
     public View.OnClickListener onStartClick = new View.OnClickListener() {
@@ -315,6 +317,27 @@ public class Welcom extends AppCompatActivity {
 
     private View.OnClickListener onNextClick = new View.OnClickListener() {
         public void onClick(View v) {
+            if (result != null) {
+                // Periksa dan set lokasi jika belum diatur
+                if (result.getLokasi() == null || result.getLokasi().isEmpty()) {
+                    result.setLokasi(lokasi != null ? lokasi : "Lokasi Tidak Diketahui");
+                }
+
+                // Buat namadata jika belum ada
+                if (result.getNamadata() == null || result.getNamadata().isEmpty()) {
+                    String namaobservant = result.getNamaObservant();
+                    String tanggal = result.getTanggal();
+                    String namadata = namaobservant + "_" + tanggal;
+                    result.setNamadata(namadata);
+                }
+
+                try {
+                    dbHandler.addHasil(result, result.getNamaObservant()); // Simpan hasil ke database
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             Intent intent = new Intent(Welcom.this, HasilPengukuran.class);
             intent.putExtra("username", namaobservant);
             intent.putExtra("tgllahir", tgllahir);
@@ -323,6 +346,7 @@ public class Welcom extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
 
     private View.OnClickListener onBackClick = new View.OnClickListener() {
         public void onClick(View v) {
